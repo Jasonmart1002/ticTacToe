@@ -2,15 +2,6 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
-function Square({ value, onClick }) {
-
-  return (
-    <button className="square" onClick={onClick}>
-      {value}
-    </button>
-  );
-}
-
 function Restart({ onClick }) {
 
   return (
@@ -26,9 +17,18 @@ function Game() {
   const nextSymbol = isXNext ? "X" : "O";
   const winner = calculateWinner(squares);
 
+  function Square({ value, onClick }) {
+
+    return (
+      <button className={winner === "X" ? "squareW" : winner === "O" ? "squareW" : "square" } onClick={onClick}>
+        {value}
+      </button>
+    );
+  }
+
   function getStatus() {
     if (winner) {
-      return "Winner: " + winner;
+      return "Winner:" + winner;
     } else if (isBoardFull(squares)) {
       return "Draw!";
     } else {
@@ -48,7 +48,7 @@ function Game() {
           nextSquares[i] = nextSymbol;
           setSquares(nextSquares);
 
-          setIsXNext(!isXNext); // toggle turns
+          setIsXNext(!isXNext);
         }}
       />
     );
@@ -103,9 +103,9 @@ function calculateWinner(squares) {
     [1, 4, 7],
     [2, 5, 8],
     [0, 4, 8],
-    [2, 4, 6]
+    [2, 4, 6],
   ];
-  // go over all possibly winning lines and check if they consist of only X's/only O's
+
   for (let i = 0; i < possibleLines.length; i++) {
     const [a, b, c] = possibleLines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
